@@ -1,24 +1,15 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import SignInScreen from './src/screens/SignInScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import AuthStack from './src/navigations/AuthStack'; // 경로 src 추가
 
+const App = () => {
   return (
-    <View style={styles.container}>
+    <NavigationContainer>
       <StatusBar style="dark" />
-      <SignInScreen />
-    </View>
+      <AuthStack />
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#000000',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
 
 export default App;
