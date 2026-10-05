@@ -24,7 +24,7 @@ const SignInScreen = ({ navigation }) => {
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 'lightskyblue' 따옴표 추가 완료
+  // 이메일 입력 여부에 따라 배경색 동적 변경 ('lightskyblue' 따옴표 적용)
   useEffect(() => {
     navigation.setOptions({
       contentStyle: {
@@ -33,7 +33,7 @@ const SignInScreen = ({ navigation }) => {
     });
   }, [email, navigation]);
 
-  // 이메일과 비밀번호 입력 여부에 따른 버튼 활성화
+  // 이메일과 비밀번호가 모두 입력되었을 때만 버튼 활성화
   useEffect(() => {
     setDisabled(!email || !password || isLoading);
   }, [email, password, isLoading]);
@@ -44,11 +44,11 @@ const SignInScreen = ({ navigation }) => {
         setIsLoading(true);
         Keyboard.dismiss();
         const data = await signIn(email, password);
-        console.log('Login 성공:', data);
+        console.log('로그인 성공:', data);
         setIsLoading(false);
         navigation.navigate('List');
       } catch (error) {
-        console.log('Login 실패:', error);
+        console.log('로그인 에러:', error);
         Alert.alert(
           '로그인 실패',
           error.message || '로그인 중 오류가 발생했습니다.',
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
     paddingHorizontal: 20,
   },
   image: {

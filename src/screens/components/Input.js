@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import { BLACK, GRAY, PRIMARY } from '../colors';
 
 export const IconNames = {
   EMAIL: 'email',
@@ -33,57 +32,37 @@ const Input = ({
 
   return (
     <View style={styles.container}>
-      <Text
-        style={[
-          styles.title,
-          value && styles.hasValueTitle,
-          isFocused && styles.focusedTitle,
-        ]}
-      >
+      <Text style={[styles.title, isFocused && styles.focusedTitle]}>
         {title}
       </Text>
-
-      <View>
-        <TextInput
-          {...props}
-          value={value}
-          style={[
-            styles.input,
-            value && styles.hasValueInput,
-            isFocused && styles.focusedInput,
-            iconName && styles.inputWithIcon,
-          ]}
-          placeholder={placeholder ?? title}
-          placeholderTextColor={GRAY?.DEFAULT ?? '#a6a6a6'}
-          autoCapitalize="none"
-          autoCorrect={false}
-          textContentType="none"
-          keyboardType={keyboardType}
-          returnKeyType={returnKeyType}
-          secureTextEntry={secureTextEntry}
-          keyboardAppearance="light"
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
-
+      <View style={styles.inputContainer}>
         {iconName && (
           <View style={styles.icon}>
             <MaterialCommunityIcons
               name={iconName}
               size={20}
-              color={(() => {
-                switch (true) {
-                  case isFocused:
-                    return PRIMARY?.DEFAULT ?? '#007AFF';
-                  case !!value:
-                    return BLACK ?? '#000000';
-                  default:
-                    return GRAY?.DEFAULT ?? '#a6a6a6';
-                }
-              })()}
+              color={isFocused ? '#007AFF' : value ? '#000' : '#a6a6a6'}
             />
           </View>
         )}
+        <TextInput
+          {...props}
+          value={value}
+          style={[
+            styles.input,
+            iconName && { paddingLeft: 38 },
+            isFocused && styles.focusedInput,
+          ]}
+          placeholder={placeholder ?? title}
+          placeholderTextColor="#a6a6a6"
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType={keyboardType}
+          returnKeyType={returnKeyType}
+          secureTextEntry={secureTextEntry}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
       </View>
     </View>
   );
@@ -99,7 +78,7 @@ Input.propTypes = {
   title: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   value: PropTypes.string,
-  iconName: PropTypes.oneOf(Object.values(IconNames)), // 대문자 Object
+  iconName: PropTypes.string,
   keyboardType: PropTypes.oneOf(Object.values(KeyboardTypes)),
   returnKeyType: PropTypes.oneOf(Object.values(ReturnKeyTypes)),
   secureTextEntry: PropTypes.bool,
@@ -108,46 +87,36 @@ Input.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   title: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 4,
-    color: GRAY?.DEFAULT ?? '#a6a6a6',
-  },
-  hasValueTitle: {
-    color: BLACK ?? '#000000',
+    marginBottom: 6,
+    color: '#666',
   },
   focusedTitle: {
-    fontWeight: '600',
-    color: PRIMARY?.DEFAULT ?? '#007AFF',
+    color: '#007AFF',
+  },
+  inputContainer: {
+    position: 'relative',
+    justifyContent: 'center',
   },
   input: {
     borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    height: 44,
-    borderColor: GRAY?.DEFAULT ?? '#a6a6a6',
+    height: 46,
+    paddingHorizontal: 12,
     fontSize: 15,
   },
-  inputWithIcon: {
-    paddingLeft: 38,
-  },
-  hasValueInput: {
-    borderColor: BLACK ?? '#000000',
-    color: BLACK ?? '#000000',
-  },
   focusedInput: {
-    borderColor: PRIMARY?.DEFAULT ?? '#007AFF',
-    color: PRIMARY?.DEFAULT ?? '#007AFF',
+    borderColor: '#007AFF',
   },
   icon: {
     position: 'absolute',
-    left: 8,
-    height: '100%',
-    justifyContent: 'center',
+    left: 10,
+    zIndex: 1,
   },
 });
 
